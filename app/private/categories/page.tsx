@@ -7,6 +7,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/utils/supabase/client'
 import { ArrowRight, ArrowLeft, ExternalLink, Info } from 'lucide-react'
 import Link from 'next/link'
+import { Suspense } from 'react'
 
 // Types
 interface CategoryType {
@@ -23,7 +24,7 @@ interface ListType {
   source_url: string | null
 }
 
-export default function CategorySelectionPage() {
+export function CategorySelectionContent() {
   const [categories, setCategories] = useState<CategoryType[]>([])
   const [currentCategoryIndex, setCurrentCategoryIndex] = useState<number>(0)
   const [lists, setLists] = useState<ListType[]>([])
@@ -385,3 +386,17 @@ export default function CategorySelectionPage() {
     </div>
   )
 } 
+
+
+// Main exported component
+export default function CategorySelectionPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-new-blue text-offwhite flex items-center justify-center">
+        <div className="text-2xl">Loading categories...</div>
+      </div>
+    }>
+      <CategorySelectionContent />
+    </Suspense>
+  )
+}
