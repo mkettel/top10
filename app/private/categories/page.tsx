@@ -1,9 +1,12 @@
+// private/categories/page.tsx
+
 'use client'
 
 import { useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/utils/supabase/client'
 import { ArrowRight, ArrowLeft, ExternalLink, Info } from 'lucide-react'
+import Link from 'next/link'
 
 // Types
 interface CategoryType {
@@ -176,11 +179,11 @@ export default function CategorySelectionPage() {
       if (error) throw error
       
       // Navigate to the game play page
-      router.push(`/game/play/${selectedList.id}?roundId=${roundId}`)
+      router.push(`/private/play/${selectedList.id}?roundId=${roundId}`)
     } catch (error) {
       console.error('Error updating round:', error)
       // For development, proceed anyway
-      router.push(`/game/play/${selectedList.id}?roundId=${roundId}`)
+      router.push(`/private/play/${selectedList.id}?roundId=${roundId}`)
     }
   }
 
@@ -237,7 +240,9 @@ export default function CategorySelectionPage() {
       onTouchEnd={onTouchEnd}
     >
       <header className="p-4 flex justify-between items-center border-b border-white/20">
-        <h1 className="text-2xl font-bold font-outfit">Top 10 Game</h1>
+        <Link href="/private" className="flex items-center gap-2 text-xl font-outfit text-offwhite hover:text-white/90">
+          <h1 className="text-2xl font-bold font-outfit">Top 10 Game</h1>
+        </Link>
         <div className="text-white/70">Judge Mode</div>
       </header>
 
@@ -248,11 +253,11 @@ export default function CategorySelectionPage() {
             <div className="flex items-center mb-6">
               <button 
                 onClick={handleBack}
-                className="mr-4 hover:bg-white/10 p-2 rounded-full"
+                className="mr-4 cursor-pointer hover:bg-white/10 p-2 rounded-full"
               >
                 <ArrowLeft size={20} />
               </button>
-              <h2 className="text-2xl font-bold">Confirm Selection</h2>
+              <h2 className="text-2xl cursor-pointer font-bold">Confirm Selection</h2>
             </div>
             
             <div className="bg-white/10 p-6 rounded-md mb-6">
@@ -286,7 +291,7 @@ export default function CategorySelectionPage() {
                 </p>
                 <button
                   onClick={handleConfirmSelection}
-                  className="w-full py-3 bg-white text-new-blue font-bold rounded-md hover:bg-white/90 transition-colors"
+                  className="w-full py-3 bg-white text-new-blue font-bold rounded-md cursor-pointer hover:bg-white/90 transition-colors"
                 >
                   Confirm Selection
                 </button>
@@ -299,7 +304,7 @@ export default function CategorySelectionPage() {
             <div className="flex items-center mb-6">
               <button 
                 onClick={handleBack}
-                className="mr-4 hover:bg-white/10 p-2 rounded-full"
+                className="mr-4 cursor-pointer hover:bg-white/10 p-2 rounded-full"
               >
                 <ArrowLeft size={20} />
               </button>
@@ -316,7 +321,7 @@ export default function CategorySelectionPage() {
                   <button
                     key={list.id}
                     onClick={() => handleSelectList(list)}
-                    className="w-full text-left bg-white/10 hover:bg-white/20 p-4 rounded-md transition-all"
+                    className="w-full cursor-pointer text-left bg-white/10 hover:bg-white/20 p-4 rounded-md transition-all"
                   >
                     <h3 className="text-lg font-semibold">{list.title}</h3>
                     {list.description && (
@@ -347,7 +352,7 @@ export default function CategorySelectionPage() {
             
             <button 
               onClick={handleSelectCategory}
-              className="w-full bg-white text-new-blue font-bold py-4 px-8 rounded-md text-xl mb-8 hover:bg-white/90 transition-all"
+              className="w-full bg-white cursor-pointer text-new-blue font-bold py-4 px-8 rounded-md text-xl mb-8 hover:bg-white/90 transition-all"
               disabled={loadingLists}
             >
               {loadingLists ? 'Loading...' : 'View Lists'}
