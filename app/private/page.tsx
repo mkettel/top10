@@ -10,5 +10,9 @@ export default async function PrivatePage() {
     redirect('/login')
   }
 
-  return <p className='text-white'>Hello {data.user.email}</p>
+  return (
+    <div className="min-h-screen flex flex-col bg-offwhite items-center justify-center">
+      <h1 className='font-outfit text-6xl'>Welcome to the private page!</h1>
+    </div>
+  )
 }

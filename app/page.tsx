@@ -9,19 +9,14 @@ const monoton = Monoton({
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen flex flex-col bg-offwhite">
-      <div className="p-8 relative">
-        <p className='text-2xl font-outfit text-new-blue font-semibold'>The</p>
-        <h1 className={`text-new-blue text-[120px] uppercase font-extrabold ${monoton.variable} leading-36 font-fun border-b-2`}>top 10</h1>
-        {/* <p className='text-2xl font-outfit absolute bottom-10 text-new'>Game</p> */}
-      </div>
-      <div className="flex justify-center px-6 items-center">
-        <Link href="/login" className="bg-new-blue text-offwhite p-4 text-lg font-outfit text-center w-fit rounded-md">
-            Play
+    <div className="min-h-screen flex flex-col bg-offwhite items-center justify-center">
+      <div className="flex flex-col justify-center items-center gap-6">
+        <h1 className='flex gap-2 font-outfit text-6xl'><span>The</span><span>Top 10</span><span>Game</span></h1>
+        <Link href="/login" className='flex w-fit items-center gap-2 text-2xl font-outfit text-offwhite bg-new-blue px-4 py-2 rounded-md'>
+          Play Now
         </Link>
       </div>
       
-
     </div>
   );
 }

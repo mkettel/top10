@@ -12,6 +12,8 @@
     "@supabase/auth-helpers-nextjs": "^0.10.0",
     "@supabase/ssr": "^0.6.1",
     "@supabase/supabase-js": "^2.49.4",
+    "lucide-react": "^0.486.0",
+    "motion": "^12.6.3",
     "next": "15.2.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
@@ -24,6 +26,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.2.4",
+    "mini-css-extract-plugin": "^2.9.2",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
