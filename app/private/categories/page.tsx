@@ -9,7 +9,7 @@ import { ArrowRight, ArrowLeft, ExternalLink, Info } from 'lucide-react'
 import Link from 'next/link'
 import { Suspense } from 'react'
 
-// Types
+// Types for Supabase data
 interface CategoryType {
   id: string
   name: string
