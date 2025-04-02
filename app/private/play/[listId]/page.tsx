@@ -7,6 +7,12 @@ import { useRouter } from 'next/navigation'
 import { createClient } from '@/utils/supabase/client'
 import { use } from 'react'
 import { Crown } from 'lucide-react'
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs"
 
 import { 
   ArrowLeft, 
@@ -64,7 +70,7 @@ export default function GamePlayPage({ params }: { params: { listId: string } })
   const [gamePhase, setGamePhase] = useState<'setup' | 'playing' | 'completed' | 'in_progress'>('setup')
   const [players, setPlayers] = useState<Player[]>([])
   const [draftType, setDraftType] = useState<'serpentine' | 'fixed'>('serpentine')
-  const [showList, setShowList] = useState(false)
+  const [showList, setShowList] = useState(true)
   const [guessedItems, setGuessedItems] = useState<GuessedItem[]>([])
   const [roundId, setRoundId] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -439,7 +445,7 @@ export default function GamePlayPage({ params }: { params: { listId: string } })
             >
             <ArrowLeft size={20} />
           </button>
-          <h1 className="text-xl font-bold">{list?.title}</h1>
+          <p>Back to Categories</p>
           </div>
         <div className="flex w-full justify-end items-center">
           {/* Judge indicator */}
@@ -565,16 +571,15 @@ export default function GamePlayPage({ params }: { params: { listId: string } })
           </div>
         )}
 
+
         {/* Playing Phase */}
         {gamePhase === 'playing' && (
 
-          
-
-          
-          <div className="w-full max-w-md mx-auto md:grid md:grid-cols-2 md:gap-2 md:max-w-4xl justify-center">
+          <div className="w-full max-w-md mx-auto md:flex flex-wrap md:gap-2 md:max-w-4xl justify-center">
+            {/* <h1 className="text-xl w-full  font-bold">{list?.title}</h1> */}
 
             {/* Player scores */}
-            <div className="bg-white/10 p-4 md:col-span-2 mb-4 md:mb-0 rounded-md">
+            <div className="bg-white/10 p-4 md:col-span-2 w-full mb-4 md:mb-0 rounded-md">
               <h2 className="text-xl font-bold mb-4">Player Scores</h2>
               <div className="grid grid-cols-1 gap-2">
                 {players
@@ -594,7 +599,7 @@ export default function GamePlayPage({ params }: { params: { listId: string } })
                         {player.isJudge && (
                           <Crown size={16} className="text-yellow-400 mr-2" />
                         )}
-                        <span className="font-medium">{player.name}</span>
+                        <span className="font-medium capitalize">{player.name}</span>
                         {player.isJudge && (
                           <span className="ml-2 text-xs text-yellow-400">(Judge)</span>
                         )}
@@ -607,149 +612,160 @@ export default function GamePlayPage({ params }: { params: { listId: string } })
             </div>
 
             {/* Available items - only show when not in player selection mode */}
-            {!showPlayerSelection && (
-              <div className="bg-white/10 p-4 rounded-md mb-4 md:mb-0 max-h-[60vh] md:col-span-1 overflow-auto">
-                <div className="flex justify-between items-center mb-4">
-                  <h2 className="text-xl font-bold">Available Items</h2>
-                  <button 
-                    onClick={() => setShowList(!showList)}
-                    className="text-sm flex items-center text-white/70 hover:text-white cursor-pointer"
-                  >
-                    {showList ? (
-                      <>
-                        <EyeOff size={14} className="mr-1" />
-                        Hide List
-                      </>
-                    ) : (
-                      <>
-                        <Eye size={14} className="mr-1" />
-                        Show List
-                      </>
-                    )}
-                  </button>
-                </div>
+            <Tabs defaultValue='list' className='w-full'>
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="list">List</TabsTrigger>
+                <TabsTrigger value="Guessed">Guessed</TabsTrigger>
+              </TabsList>
 
-                
-                  <div className="grid grid-cols-1 gap-2">
-                    {listItems.map(item => {
-                      const isGuessed = guessedItems.some(guessed => guessed.itemId === item.id)
-                      return (
-                        <button
-                          key={item.id}
-                          onClick={() => handleItemClick(item)}
-                          disabled={isGuessed}
-                          className={`p-3 rounded-md text-left flex items-center ${
-                            isGuessed 
-                              ? 'bg-white/5 text-white/30 cursor-not-allowed' 
-                              : 'bg-white/10 hover:bg-white/20 cursor-pointer'
-                          }`}
-                        >
-                          <div className="w-7 h-7 flex items-center justify-center bg-white/20 rounded-full mr-3">
-                            {item.rank}
-                          </div>
-                          <div>
-                            <div className="font-medium">{showList ? item.name : "???"}</div>
-                            {item.details && (
-                              <div className="text-xs text-white/70">
-                                {showList ? item.details : "????"}
+              <TabsContent value="list">
+              {!showPlayerSelection && (
+                <div className="bg-white/10 p-4 rounded-md mb-4 md:mb-0 max-h-[60vh] md:col-span-1 overflow-auto">
+                  <div className="flex justify-between items-center mb-4">
+                    <h2 className="text-xl font-bold">Available Items</h2>
+                    <button 
+                      onClick={() => setShowList(!showList)}
+                      className="text-sm flex items-center text-white/70 hover:text-white cursor-pointer"
+                    >
+                      {showList ? (
+                        <>
+                          <EyeOff size={14} className="mr-1" />
+                          Hide List
+                        </>
+                      ) : (
+                        <>
+                          <Eye size={14} className="mr-1" />
+                          Show List
+                        </>
+                      )}
+                    </button>
+                  </div>
+
+                  
+                    <div className="grid grid-cols-1 gap-2">
+                      {listItems.map(item => {
+                        const isGuessed = guessedItems.some(guessed => guessed.itemId === item.id)
+                        return (
+                          <button
+                            key={item.id}
+                            onClick={() => handleItemClick(item)}
+                            disabled={isGuessed}
+                            className={`p-3 rounded-md text-left flex items-center ${
+                              isGuessed 
+                                ? 'bg-white/5 text-white/30 cursor-not-allowed' 
+                                : 'bg-white/10 hover:bg-white/20 cursor-pointer'
+                            }`}
+                          >
+                            <div className="w-7 h-7 flex items-center justify-center bg-white/20 rounded-full mr-3">
+                              {item.rank}
+                            </div>
+                            <div>
+                              <div className="font-medium">{showList ? item.name : "???"}</div>
+                              {item.details && (
+                                <div className="text-xs text-white/70">
+                                  {showList ? item.details : "????"}
+                                </div>
+                              )}
+                            </div>
+                            {isGuessed && (
+                              <div className="ml-auto">
+                                <Check size={16} className="text-green-400" />
                               </div>
                             )}
-                          </div>
-                          {isGuessed && (
-                            <div className="ml-auto">
-                              <Check size={16} className="text-green-400" />
-                            </div>
-                          )}
-                        </button>
-                      )
-                    })}
-                  </div>
-              </div>
-            )}
-            
-            {/* Player selection when an item is clicked */}
-            {showPlayerSelection && selectedItem && (
-              <div className="bg-white/10 p-4 rounded-md mb-4 md:mb-0">
-                <div className="flex justify-between items-center mb-4">
-                  <h2 className="text-xl font-bold">Who Guessed It?</h2>
-                  <button 
-                    onClick={() => {
-                      setSelectedItem(null)
-                      setShowPlayerSelection(false)
-                    }}
-                    className="text-white/70 hover:text-white cursor-pointer"
-                  >
-                    Cancel
-                  </button>
-                </div>
-                
-                <div className="bg-white/5 p-3 rounded-md mb-4">
-                  <div className="flex items-center">
-                    <div className="w-7 h-7 flex items-center justify-center bg-white/20 rounded-full mr-3">
-                      {selectedItem.rank}
+                          </button>
+                        )
+                      })}
                     </div>
-                    <div>
-                      <div className="font-medium">{selectedItem.name}</div>
-                      {selectedItem.details && (
-                        <div className="text-xs text-white/70">
-                          {selectedItem.details}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="space-y-2">
-                  {/* do not show judge */}
-                  {players.map(player => (
-                    !player.isJudge && (
-                      <button
-                        key={player.id}
-                        onClick={() => assignGuessToPlayer(player.id)}
-                        className={`w-full p-3 bg-white/10 hover:bg-white/20 rounded-md flex items-center justify-between cursor-pointer`}
-                      >
-                        <span className="font-medium">{player.name}</span>
-                        <span className="text-sm text-white/70">Score: {player.score}</span>
-                      </button>
-                    )
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Guessed Items */}
-            <div className="bg-white/10 p-4 rounded-md mb-4 md:mb-0 md:col-span-1">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-bold">Guessed Items</h2>
-                <div className="bg-white/20 px-3 py-1 rounded-full text-sm">
-                  {guessedItems.length}/10 Guessed
-                </div>
-              </div>
-              
-              {guessedItems.length > 0 ? (
-                <div className="space-y-2">
-                  {guessedItems.map((item) => (
-                    <div key={item.itemId} className="flex items-center p-2 bg-white/10 rounded-md">
-                      <div className="w-7 h-7 flex items-center justify-center bg-white/20 rounded-full mr-3">
-                        {item.itemRank}
-                      </div>
-                      <div>
-                        <div className="font-medium">{item.itemName}</div>
-                        <div className="text-xs text-white/70">
-                          Guessed by {item.playerName}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-white/50 text-center py-4">
-                  No items guessed yet
                 </div>
               )}
-            </div>
-            
-            
+              
+              {/* Player selection when an item is clicked */}
+              {showPlayerSelection && selectedItem && (
+                <div className="bg-white/10 p-4 rounded-md mb-4 md:mb-0">
+                  <div className="flex justify-between items-center mb-4">
+                    <h2 className="text-xl font-bold">Who Guessed It?</h2>
+                    <button 
+                      onClick={() => {
+                        setSelectedItem(null)
+                        setShowPlayerSelection(false)
+                      }}
+                      className="text-white/70 hover:text-white cursor-pointer"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                  
+                  <div className="bg-white/5 p-3 rounded-md mb-4">
+                    <div className="flex items-center">
+                      <div className="w-7 h-7 flex items-center justify-center bg-white/20 rounded-full mr-3">
+                        {selectedItem.rank}
+                      </div>
+                      <div>
+                        <div className="font-medium">{selectedItem.name}</div>
+                        {selectedItem.details && (
+                          <div className="text-xs text-white/70">
+                            {selectedItem.details}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    {/* do not show judge */}
+                    {players.map(player => (
+                      !player.isJudge && (
+                        <button
+                          key={player.id}
+                          onClick={() => assignGuessToPlayer(player.id)}
+                          className={`w-full p-3 bg-white/10 hover:bg-white/20 rounded-md flex items-center justify-between cursor-pointer`}
+                        >
+                          <span className="font-medium capitalize">{player.name}</span>
+                          <span className="text-sm text-white/70">Score: {player.score}</span>
+                        </button>
+                      )
+                    ))}
+                  </div>
+                </div>
+              )}
+            </TabsContent>
+
+
+            {/* Guessed Items */}
+              <TabsContent value="Guessed">
+                <div className="bg-white/10 p-4 rounded-md mb-4 md:mb-0 md:col-span-1">
+                  <div className="flex justify-between items-center mb-4">
+                    <h2 className="text-xl font-bold">Guessed Items</h2>
+                    <div className="bg-white/20 px-3 py-1 rounded-full text-sm">
+                      {guessedItems.length}/10 Guessed
+                    </div>
+                  </div>
+                  
+                  {guessedItems.length > 0 ? (
+                    <div className="space-y-2">
+                      {guessedItems.map((item) => (
+                        <div key={item.itemId} className="flex items-center p-2 bg-white/10 rounded-md">
+                          <div className="w-7 h-7 flex items-center justify-center bg-white/20 rounded-full mr-3">
+                            {item.itemRank}
+                          </div>
+                          <div>
+                            <div className="font-medium">{item.itemName}</div>
+                            <div className="text-xs text-white/70">
+                              Guessed by {item.playerName}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-white/50 text-center py-4">
+                      No items guessed yet
+                    </div>
+                  )}
+                </div>
+              </TabsContent>
+          
+            </Tabs>
           </div>
         )}
 
