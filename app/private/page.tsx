@@ -65,6 +65,7 @@ export default function PlayerSetupPage() {
   // Set judge
   const setJudge = (index: number): void => {
     const newPlayers = [...players]
+    // Clear judge selection for all players
     newPlayers.forEach((player, i) => {
       player.isJudge = (i === index)
     })
