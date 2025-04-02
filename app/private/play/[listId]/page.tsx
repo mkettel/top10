@@ -437,7 +437,7 @@ export default function GamePlayPage({ params }: { params: { listId: string } })
   return (
     <div className="min-h-screen bg-new-blue text-offwhite flex flex-col">
       {/* Header */}
-      <header className="p-4 flex flex-col sm:flex-row gap-1 justify-between items-center border-b border-white/20">
+      <header className="p-4 flex gap-1 justify-between items-center border-b border-white/20">
         <div className="flex w-full items-center">
           <button 
             onClick={() => router.push('/private/categories')}
@@ -453,12 +453,12 @@ export default function GamePlayPage({ params }: { params: { listId: string } })
             <Crown size={14} className="mr-1" />
             Judge: {players.find(p => p.isJudge)?.name || 'Unknown'}
           </div>
-          <button 
+          {/* <button 
             onClick={() => setShowList(!showList)}
             className="hover:bg-white/10 p-2 rounded-full cursor-pointer"
           >
             {showList ? <EyeOff size={20} /> : <Eye size={20} />}
-          </button>
+          </button> */}
         </div>
       </header>
 
