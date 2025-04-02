@@ -5,36 +5,8 @@ import { useState, useEffect } from 'react'
 import { createClient } from '@/utils/supabase/client'
 import { Plus, Minus, User2, Crown } from 'lucide-react'
 import { PostgrestError, User } from '@supabase/supabase-js'
+import { GameGroup, GameRound, PlayerData, DatabasePlayer } from '@/lib/types/game'
 
-// Types for our application
-interface PlayerData {
-  name: string
-  isJudge: boolean
-}
-
-interface DatabasePlayer {
-  id: string
-  group_id: string
-  name: string
-  total_wins: number
-  created_at: string
-}
-
-interface GameGroup {
-  id: string
-  name: string
-  created_by: string
-  created_at: string
-}
-
-interface GameRound {
-  id: string
-  group_id: string
-  judge_id: string
-  round_number: number
-  status: 'setup' | 'in_progress' | 'completed'
-  created_at: string
-}
 
 export default function PlayerSetupPage() {
   const [user, setUser] = useState<User | null>(null)
@@ -198,7 +170,8 @@ export default function PlayerSetupPage() {
       localStorage.setItem('isJudge', (judgePlayer.id === user.id).toString())
       
       // 7. Navigate to category selection
-      window.location.href = `/game/categories?roundId=${gameRound.id}`
+      window.location.href = `/private/categories?roundId=${gameRound.id}`
+      // window.location.href = `/private/categories`
     } catch (error) {
       console.error('Error creating game:', error)
       const pgError = error as PostgrestError
