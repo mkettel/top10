@@ -431,15 +431,17 @@ export default function GamePlayPage({ params }: { params: { listId: string } })
   return (
     <div className="min-h-screen bg-new-blue text-offwhite flex flex-col">
       {/* Header */}
-      <header className="p-4 flex justify-between items-center border-b border-white/20">
-        <button 
-          onClick={() => router.push('/private/categories')}
-          className="hover:bg-white/10 p-2 rounded-full cursor-pointer"
-        >
-          <ArrowLeft size={20} />
-        </button>
-        <h1 className="text-xl font-bold">{list?.title}</h1>
-        <div className="flex items-center">
+      <header className="p-4 flex flex-col sm:flex-row gap-1 justify-between items-center border-b border-white/20">
+        <div className="flex w-full items-center">
+          <button 
+            onClick={() => router.push('/private/categories')}
+            className="hover:bg-white/10 p-2 rounded-full cursor-pointer"
+            >
+            <ArrowLeft size={20} />
+          </button>
+          <h1 className="text-xl font-bold">{list?.title}</h1>
+          </div>
+        <div className="flex w-full justify-end items-center">
           {/* Judge indicator */}
           <div className="mr-3 text-sm bg-yellow-500/30 text-yellow-100 px-3 py-1 rounded-full flex items-center">
             <Crown size={14} className="mr-1" />
