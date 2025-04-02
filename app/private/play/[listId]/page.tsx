@@ -569,7 +569,7 @@ export default function GamePlayPage({ params }: { params: { listId: string } })
           
 
           
-          <div className="w-full max-w-md mx-auto md:grid md:grid-cols-2 md:gap-2 md:max-w-screen justify-center">
+          <div className="w-full max-w-md mx-auto md:grid md:grid-cols-2 md:gap-2 md:max-w-4xl justify-center">
 
             {/* Player scores */}
             <div className="bg-white/10 p-4 md:col-span-2 mb-4 md:mb-0 rounded-md">
