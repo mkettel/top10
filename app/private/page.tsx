@@ -272,18 +272,18 @@ export default function PlayerSetupPage() {
             ))}
           </div>
           
-          {players.length < 2 && (
+          {players.length < 3 && (
             <p className="text-yellow-300 mt-4 text-sm">
-              You need at least 2 players to start a game.
+              You need at least 3 players to start a game.
             </p>
           )}
         </div>
         
         <button
           onClick={startGame}
-          disabled={isCreatingGame || players.length < 2}
+          disabled={isCreatingGame || players.length < 3}
           className={`w-full py-4 rounded-md font-bold text-xl transition-colors ${
-            isCreatingGame || players.length < 2
+            isCreatingGame || players.length < 3
               ? 'bg-white/30 cursor-not-allowed'
               : 'bg-white text-new-blue hover:bg-white/90'
           }`}

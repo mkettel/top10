@@ -6,6 +6,8 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/utils/supabase/client'
 import { use } from 'react'
+import { Crown } from 'lucide-react'
+
 import { 
   ArrowLeft, 
   Eye, 
@@ -32,6 +34,7 @@ interface Player {
   name: string
   score: number
   draftPosition: number
+  isJudge?: boolean
 }
 
 interface GuessedItem {
@@ -116,6 +119,18 @@ export default function GamePlayPage({ params }: { params: { listId: string } })
               score: rp.score || 0,
               draftPosition: rp.draft_position
             })))
+          }
+
+          // Find and mark the judge
+          if (roundData && playersData) {
+            const judgeId = roundData.judge_id;
+            setPlayers(playersData.map(rp => ({
+              id: rp.player_id,
+              name: rp.player.name,
+              score: rp.score || 0,
+              draftPosition: rp.draft_position,
+              isJudge: rp.player_id === judgeId  // Set isJudge flag
+            })));
           }
           
           // Fetch guessed items
@@ -233,7 +248,7 @@ export default function GamePlayPage({ params }: { params: { listId: string } })
     
     // Update player score
     const updatedPlayers = players.map(p => {
-      if (p.id === playerId) {
+      if (p.id === playerId && !p.isJudge) {
         return { ...p, score: p.score + 1 }
       }
       return p
@@ -256,15 +271,17 @@ export default function GamePlayPage({ params }: { params: { listId: string } })
           if (error) console.error('Error recording guess:', error)
         })
       
-      // Update player score
-      supabase
-        .from('round_players')
-        .update({ score: player.score + 1 })
-        .eq('round_id', roundId)
-        .eq('player_id', playerId)
-        .then(({ error }) => {
-          if (error) console.error('Error updating player score:', error)
-        })
+      // Update player score - only if they are not the judge
+      if (!player.isJudge) {
+        supabase
+          .from('round_players')
+          .update({ score: player.score + 1 })
+          .eq('round_id', roundId)
+          .eq('player_id', playerId)
+          .then(({ error }) => {
+            if (error) console.error('Error updating player score:', error)
+          })
+      }
     }
     
     // Reset selection state
@@ -410,12 +427,19 @@ export default function GamePlayPage({ params }: { params: { listId: string } })
           <ArrowLeft size={20} />
         </button>
         <h1 className="text-xl font-bold">{list?.title}</h1>
-        <button 
-          onClick={() => setShowList(!showList)}
-          className="hover:bg-white/10 p-2 rounded-full cursor-pointer"
-        >
-          {showList ? <EyeOff size={20} /> : <Eye size={20} />}
-        </button>
+        <div className="flex items-center">
+          {/* Judge indicator */}
+          <div className="mr-3 text-sm bg-yellow-500/30 text-yellow-100 px-3 py-1 rounded-full flex items-center">
+            <Crown size={14} className="mr-1" />
+            Judge: {players.find(p => p.isJudge)?.name || 'Unknown'}
+          </div>
+          <button 
+            onClick={() => setShowList(!showList)}
+            className="hover:bg-white/10 p-2 rounded-full cursor-pointer"
+          >
+            {showList ? <EyeOff size={20} /> : <Eye size={20} />}
+          </button>
+        </div>
       </header>
 
       <main className="flex-1 overflow-auto p-4">
@@ -657,22 +681,25 @@ export default function GamePlayPage({ params }: { params: { listId: string } })
                 </div>
                 
                 <div className="space-y-2">
+                  {/* do not show judge */}
                   {players.map(player => (
-                    <button
-                      key={player.id}
-                      onClick={() => assignGuessToPlayer(player.id)}
-                      className="w-full p-3 bg-white/10 hover:bg-white/20 rounded-md flex items-center justify-between cursor-pointer"
-                    >
-                      <span className="font-medium">{player.name}</span>
-                      <span className="text-sm text-white/70">Score: {player.score}</span>
-                    </button>
+                    !player.isJudge && (
+                      <button
+                        key={player.id}
+                        onClick={() => assignGuessToPlayer(player.id)}
+                        className={`w-full p-3 bg-white/10 hover:bg-white/20 rounded-md flex items-center justify-between cursor-pointer`}
+                      >
+                        <span className="font-medium">{player.name}</span>
+                        <span className="text-sm text-white/70">Score: {player.score}</span>
+                      </button>
+                    )
                   ))}
                 </div>
               </div>
             )}
             
             {/* Player scores */}
-            <div className="bg-white/10 p-4 rounded-md">
+            <div className="bg-white/10 p-4  rounded-md">
               <h2 className="text-xl font-bold mb-4">Player Scores</h2>
               <div className="grid grid-cols-1 gap-2">
                 {players
@@ -681,14 +708,21 @@ export default function GamePlayPage({ params }: { params: { listId: string } })
                     <div 
                       key={player.id} 
                       className={`p-3 rounded-md flex justify-between items-center ${
-                        index === 0 && player.score > 0 ? 'bg-yellow-500/20' : 'bg-white/10'
+                        index === 0 && player.score > 0 && !player.isJudge ? 'bg-yellow-500/20' : 
+                        player.isJudge ? 'bg-yellow-500/10 border border-yellow-500/30' : 'bg-white/10'
                       }`}
                     >
                       <div className="flex items-center">
-                        {index === 0 && player.score > 0 && (
+                        {index === 0 && player.score > 0 && !player.isJudge && (
                           <Trophy size={16} className="text-yellow-400 mr-2" />
                         )}
+                        {player.isJudge && (
+                          <Crown size={16} className="text-yellow-400 mr-2" />
+                        )}
                         <span className="font-medium">{player.name}</span>
+                        {player.isJudge && (
+                          <span className="ml-2 text-xs text-yellow-400">(Judge)</span>
+                        )}
                       </div>
                       <span className="text-lg font-bold">{player.score}</span>
                     </div>
