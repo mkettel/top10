@@ -53,7 +53,7 @@ interface ListData {
 }
 
 export default function GamePlayPage({ params }: { params: { listId: string } }) {
-  const { listId } = use(params)
+  const { listId } = params
   // const listId = params.listId
   const router = useRouter()
   const supabase = createClient()
