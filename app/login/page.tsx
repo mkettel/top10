@@ -71,10 +71,10 @@ export default function LoginPage() {
   }
   
   return (
-    <div className="flex items-center justify-center h-screen bg-offwhite">
+    <div className="flex  items-center justify-center h-screen bg-offwhite">
       <form 
         onSubmit={handleSubmit}
-        className="bg-new-blue p-8 max-w-xl w-full rounded-md shadow-md"
+        className="bg-new-blue m-2 p-8 max-w-xl w-full rounded-md shadow-md"
       >
         <div className="flex mb-8">
           <h1 className="text-4xl font-outfit text-offwhite">
