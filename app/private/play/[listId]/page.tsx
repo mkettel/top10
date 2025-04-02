@@ -61,7 +61,7 @@ export default function GamePlayPage({ params }: { params: { listId: string } })
   // Game state
   const [list, setList] = useState<ListData | null>(null)
   const [listItems, setListItems] = useState<ListItem[]>([])
-  const [gamePhase, setGamePhase] = useState<'setup' | 'playing' | 'completed'>('setup')
+  const [gamePhase, setGamePhase] = useState<'setup' | 'playing' | 'completed' | 'in_progress'>('setup')
   const [players, setPlayers] = useState<Player[]>([])
   const [draftType, setDraftType] = useState<'serpentine' | 'fixed'>('serpentine')
   const [showList, setShowList] = useState(false)
@@ -87,6 +87,9 @@ export default function GamePlayPage({ params }: { params: { listId: string } })
         const roundIdFromUrl = urlParams.get('roundId')
         const storedRoundId = localStorage.getItem('currentRoundId')
         const currentRoundId = roundIdFromUrl || storedRoundId
+
+        console.log('currentRoundId:', currentRoundId)
+        console.log('params', urlParams)
         
         if (currentRoundId) {
           setRoundId(currentRoundId)
@@ -191,6 +194,7 @@ export default function GamePlayPage({ params }: { params: { listId: string } })
     fetchGameData()
   }, [listId, supabase])
 
+
   // Start the game
   const startGame = async () => {
     try {
@@ -215,6 +219,14 @@ export default function GamePlayPage({ params }: { params: { listId: string } })
       setGamePhase('playing')
     }
   }
+
+  useEffect(() => {
+    console.log('gamePhase:', gamePhase)
+    if (gamePhase === 'in_progress') {
+      // Start the game
+      setGamePhase('playing')
+    }
+  }, [gamePhase])
 
   // Handle item click (when judge selects an item)
   const handleItemClick = (item: ListItem) => {
@@ -588,7 +600,7 @@ export default function GamePlayPage({ params }: { params: { listId: string } })
             
             {/* Available items - only show when not in player selection mode */}
             {!showPlayerSelection && (
-              <div className="bg-white/10 p-4 rounded-md mb-4">
+              <div className="bg-white/10 p-4 rounded-md mb-4 max-h-[40vh] overflow-auto">
                 <div className="flex justify-between items-center mb-4">
                   <h2 className="text-xl font-bold">Available Items</h2>
                   <button 
@@ -609,7 +621,6 @@ export default function GamePlayPage({ params }: { params: { listId: string } })
                   </button>
                 </div>
                 
-                {showList && (
                   <div className="grid grid-cols-1 gap-2">
                     {listItems.map(item => {
                       const isGuessed = guessedItems.some(guessed => guessed.itemId === item.id)
@@ -628,10 +639,10 @@ export default function GamePlayPage({ params }: { params: { listId: string } })
                             {item.rank}
                           </div>
                           <div>
-                            <div className="font-medium">{item.name}</div>
+                            <div className="font-medium">{showList ? item.name : "???"}</div>
                             {item.details && (
                               <div className="text-xs text-white/70">
-                                {item.details}
+                                {showList ? item.details : "????"}
                               </div>
                             )}
                           </div>
@@ -644,7 +655,6 @@ export default function GamePlayPage({ params }: { params: { listId: string } })
                       )
                     })}
                   </div>
-                )}
               </div>
             )}
             

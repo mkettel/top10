@@ -24,6 +24,6 @@ export interface GameRound {
   group_id: string
   judge_id: string
   round_number: number
-  status: 'setup' | 'in_progress' | 'completed'
+  status: 'setup' | 'in_progress' | 'completed' | 'playing'
   created_at: string
 }
