@@ -565,42 +565,48 @@ export default function GamePlayPage({ params }: { params: { listId: string } })
 
         {/* Playing Phase */}
         {gamePhase === 'playing' && (
-          <div className="w-full max-w-md mx-auto">
-            {/* Guessed Items */}
-            <div className="bg-white/10 p-4 rounded-md mb-4">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-bold">Guessed Items</h2>
-                <div className="bg-white/20 px-3 py-1 rounded-full text-sm">
-                  {guessedItems.length}/10 Guessed
-                </div>
-              </div>
-              
-              {guessedItems.length > 0 ? (
-                <div className="space-y-2">
-                  {guessedItems.map((item) => (
-                    <div key={item.itemId} className="flex items-center p-2 bg-white/10 rounded-md">
-                      <div className="w-7 h-7 flex items-center justify-center bg-white/20 rounded-full mr-3">
-                        {item.itemRank}
+
+          
+
+          
+          <div className="w-full max-w-md mx-auto md:grid md:grid-cols-2 md:gap-2 md:max-w-screen justify-center">
+
+            {/* Player scores */}
+            <div className="bg-white/10 p-4 md:col-span-2 mb-4 md:mb-0 rounded-md">
+              <h2 className="text-xl font-bold mb-4">Player Scores</h2>
+              <div className="grid grid-cols-1 gap-2">
+                {players
+                  .sort((a, b) => b.score - a.score) // Sort by score descending
+                  .map((player, index) => (
+                    <div 
+                      key={player.id} 
+                      className={`p-3 rounded-md flex justify-between items-center ${
+                        index === 0 && player.score > 0 && !player.isJudge ? 'bg-yellow-500/20' : 
+                        player.isJudge ? 'bg-yellow-500/10 border border-yellow-500/30' : 'bg-white/10'
+                      }`}
+                    >
+                      <div className="flex items-center">
+                        {index === 0 && player.score > 0 && !player.isJudge && (
+                          <Trophy size={16} className="text-yellow-400 mr-2" />
+                        )}
+                        {player.isJudge && (
+                          <Crown size={16} className="text-yellow-400 mr-2" />
+                        )}
+                        <span className="font-medium">{player.name}</span>
+                        {player.isJudge && (
+                          <span className="ml-2 text-xs text-yellow-400">(Judge)</span>
+                        )}
                       </div>
-                      <div>
-                        <div className="font-medium">{item.itemName}</div>
-                        <div className="text-xs text-white/70">
-                          Guessed by {item.playerName}
-                        </div>
-                      </div>
+                      <span className="text-lg font-bold">{player.score}</span>
                     </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-white/50 text-center py-4">
-                  No items guessed yet
-                </div>
-              )}
+                  ))
+                }
+              </div>
             </div>
-            
+
             {/* Available items - only show when not in player selection mode */}
             {!showPlayerSelection && (
-              <div className="bg-white/10 p-4 rounded-md mb-4 max-h-[40vh] overflow-auto">
+              <div className="bg-white/10 p-4 rounded-md mb-4 md:mb-0 max-h-[60vh] md:col-span-1 overflow-auto">
                 <div className="flex justify-between items-center mb-4">
                   <h2 className="text-xl font-bold">Available Items</h2>
                   <button 
@@ -620,6 +626,7 @@ export default function GamePlayPage({ params }: { params: { listId: string } })
                     )}
                   </button>
                 </div>
+
                 
                   <div className="grid grid-cols-1 gap-2">
                     {listItems.map(item => {
@@ -660,7 +667,7 @@ export default function GamePlayPage({ params }: { params: { listId: string } })
             
             {/* Player selection when an item is clicked */}
             {showPlayerSelection && selectedItem && (
-              <div className="bg-white/10 p-4 rounded-md mb-4">
+              <div className="bg-white/10 p-4 rounded-md mb-4 md:mb-0">
                 <div className="flex justify-between items-center mb-4">
                   <h2 className="text-xl font-bold">Who Guessed It?</h2>
                   <button 
@@ -707,39 +714,40 @@ export default function GamePlayPage({ params }: { params: { listId: string } })
                 </div>
               </div>
             )}
-            
-            {/* Player scores */}
-            <div className="bg-white/10 p-4  rounded-md">
-              <h2 className="text-xl font-bold mb-4">Player Scores</h2>
-              <div className="grid grid-cols-1 gap-2">
-                {players
-                  .sort((a, b) => b.score - a.score) // Sort by score descending
-                  .map((player, index) => (
-                    <div 
-                      key={player.id} 
-                      className={`p-3 rounded-md flex justify-between items-center ${
-                        index === 0 && player.score > 0 && !player.isJudge ? 'bg-yellow-500/20' : 
-                        player.isJudge ? 'bg-yellow-500/10 border border-yellow-500/30' : 'bg-white/10'
-                      }`}
-                    >
-                      <div className="flex items-center">
-                        {index === 0 && player.score > 0 && !player.isJudge && (
-                          <Trophy size={16} className="text-yellow-400 mr-2" />
-                        )}
-                        {player.isJudge && (
-                          <Crown size={16} className="text-yellow-400 mr-2" />
-                        )}
-                        <span className="font-medium">{player.name}</span>
-                        {player.isJudge && (
-                          <span className="ml-2 text-xs text-yellow-400">(Judge)</span>
-                        )}
-                      </div>
-                      <span className="text-lg font-bold">{player.score}</span>
-                    </div>
-                  ))
-                }
+
+            {/* Guessed Items */}
+            <div className="bg-white/10 p-4 rounded-md mb-4 md:mb-0 md:col-span-1">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl font-bold">Guessed Items</h2>
+                <div className="bg-white/20 px-3 py-1 rounded-full text-sm">
+                  {guessedItems.length}/10 Guessed
+                </div>
               </div>
+              
+              {guessedItems.length > 0 ? (
+                <div className="space-y-2">
+                  {guessedItems.map((item) => (
+                    <div key={item.itemId} className="flex items-center p-2 bg-white/10 rounded-md">
+                      <div className="w-7 h-7 flex items-center justify-center bg-white/20 rounded-full mr-3">
+                        {item.itemRank}
+                      </div>
+                      <div>
+                        <div className="font-medium">{item.itemName}</div>
+                        <div className="text-xs text-white/70">
+                          Guessed by {item.playerName}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-white/50 text-center py-4">
+                  No items guessed yet
+                </div>
+              )}
             </div>
+            
+            
           </div>
         )}
 
