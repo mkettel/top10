@@ -295,7 +295,7 @@ export default function PlayerSetupPage() {
       </div>
 
       {/* Link to Simple mode /private/simple */}
-      <div className="max-w-md mx-auto mt-8">
+      <div className="max-w-md mx-auto mt-8 pb-6">
         <p className="text-center text-white/70 mb-4">
           Want to play a quick game? Try the simple mode!
         </p>
