@@ -575,7 +575,7 @@ export default function GamePlayPage({ params }: { params: { listId: string } })
             {/* Available items - only show when not in player selection mode */}
             <div className="flex gap-2">
             <Tabs defaultValue='list' className='w-full bg-white/10 rounded-md p-1'>
-              <TabsList className="grid w-full grid-cols-2">
+              <TabsList className="grid bg-transparent w-full grid-cols-2">
                 <TabsTrigger value="list" className='cursor-pointer'>List</TabsTrigger>
                 <TabsTrigger value="Guessed" className='cursor-pointer'>Guessed</TabsTrigger>
               </TabsList>
@@ -695,7 +695,7 @@ export default function GamePlayPage({ params }: { params: { listId: string } })
 
             {/* Guessed Items */}
               <TabsContent value="Guessed">
-                <div className="bg-white/10 p-4 rounded-md mb-4 md:mb-0 md:col-span-1">
+                <div className="bg-white/10 p-4 rounded-md mb-1 md:mb-0 md:col-span-1">
                   <div className="flex justify-between items-center mb-4">
                     <h2 className="text-lg font-bold">Guessed Items</h2>
                     <div className="bg-white/20 px-3 py-1 rounded-full text-sm">
