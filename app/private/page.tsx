@@ -28,6 +28,7 @@ export default function PlayerSetupPage() {
         redirect('/login')
       } else {
         setUser(data.user)
+        console.log('User:', data.user)
         setLoading(false)
       }
     }

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { login, signup } from './actions'
+import { login, signup, anonymousLogin } from './actions'
 import { EyeIcon, EyeOffIcon } from 'lucide-react'
 
 export default function LoginPage() {
@@ -20,6 +20,7 @@ export default function LoginPage() {
   const handleSubmit = async (event: any) => {
     event.preventDefault()
     setError('')
+    
     
     // Validate password on login/signup attempt
     if (password.length < 8) {
@@ -69,6 +70,18 @@ export default function LoginPage() {
     setPassword(value)
     validatePassword(value)
   }
+
+  // Anonymous login function
+  const handleGuestAccess = async () => {
+    try {
+      const result = await anonymousLogin()
+      if (result?.error) {
+        setError(result.error.message || 'Anonymous login failed')
+      }
+    } catch (err) {
+      setError('An error occurred. Please try again.')
+    }
+  }
   
   return (
     <div className="flex  items-center justify-center h-screen bg-offwhite">
@@ -81,6 +94,17 @@ export default function LoginPage() {
             {isLogin ? 'Log in' : 'Sign up'}
           </h1>
         </div>
+
+        {/* Anonymous Login */}
+        <button 
+          type="button"
+          onClick={handleGuestAccess}
+          className="bg-transparent border mb-6 cursor-pointer border-white text-white py-2 px-4 rounded-md font-semibold mt-4 hover:bg-white/10 transition-colors w-full"
+        >
+          Continue as Guest
+        </button>
+
+
         
         {error && (
           <div className="bg-red-500 border-l-4 border-red-500 text-red-100 p-4 mb-4 rounded">

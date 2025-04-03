@@ -325,14 +325,27 @@ export default function GamePlayPage({ params }: { params: { listId: string } })
         
         // If there's a single winner, update their win count
         if (winners.length === 1) {
-          const { error: winnerError } = await supabase
+          // First, fetch the current player data
+          const { data: playerData, error: fetchError } = await supabase
             .from('players')
-            .update({
-              total_wins: supabase.rpc('increment', { x: 1 })
-            })
+            .select('total_wins')
             .eq('id', winners[0].id)
+            .single()
           
-          if (winnerError) console.error('Error updating winner stats:', winnerError)
+          if (fetchError) {
+            console.error('Error fetching player stats:', fetchError)
+          } else {
+            // Then update with the incremented value
+            const currentWins = playerData.total_wins || 0
+            const { error: winnerError } = await supabase
+              .from('players')
+              .update({
+                total_wins: currentWins + 1
+              })
+              .eq('id', winners[0].id)
+            
+            if (winnerError) console.error('Error updating winner stats:', winnerError)
+          }
         }
       }
       

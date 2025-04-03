@@ -65,3 +65,31 @@ export async function signup(formData: FormData) {
   revalidatePath('/', 'layout')
   redirect('/login') // Redirect to a verification page
 }
+
+// Anonymous login
+export async function anonymousLogin() {
+  const supabase = await createClient()
+
+  const { data, error } = await supabase.auth.signInAnonymously()
+
+  if (error) {
+    return { error }
+  }
+
+  revalidatePath('/', 'layout')
+  redirect('/private')
+}
+
+// Logout function
+export async function logout() {
+  const supabase = await createClient()
+
+  const { error } = await supabase.auth.signOut()
+
+  if (error) {
+    return { error }
+  }
+
+  revalidatePath('/', 'layout')
+  redirect('/login')
+}
