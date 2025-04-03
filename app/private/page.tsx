@@ -293,6 +293,19 @@ export default function PlayerSetupPage() {
           {isCreatingGame ? 'Creating Game...' : 'Start Game'}
         </button>
       </div>
+
+      {/* Link to Simple mode /private/simple */}
+      <div className="max-w-md mx-auto mt-8">
+        <p className="text-center text-white/70 mb-4">
+          Want to play a quick game? Try the simple mode!
+        </p>
+        <a 
+          href="/private/simple"
+          className="block w-full py-4 bg-white/10 text-white text-center font-semibold rounded-lg hover:bg-white/20 transition-colors"
+        >
+          Simple Mode
+        </a>
+      </div>
     </div>
   )
 }
