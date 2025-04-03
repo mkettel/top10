@@ -568,8 +568,8 @@ export default function GamePlayPage({ params }: { params: { listId: string } })
 
           <div className="w-full max-w-lg mx-auto md:flex-col flex-wrap md:gap-2 md:max-w-5xl justify-center">
             
-            <div className="flex items-center justify-center mb-2 md:mb-4">
-              <h1 className="text-xl md:text-3xl text-center font-bold">{list?.title}</h1>
+            <div className="flex items-center justify-center  mb-4 md:mb-4">
+              <h1 className="text-xl md:text-3xl text-center  font-bold">{list?.title}</h1>
             </div>
 
             {/* Available items - only show when not in player selection mode */}
@@ -582,7 +582,7 @@ export default function GamePlayPage({ params }: { params: { listId: string } })
 
               <TabsContent value="list">
               {!showPlayerSelection && (
-                <div className="bg-white/10 p-2 rounded-md mb-0 md:mb-0 max-h-[75vh] md:col-span-1 overflow-auto">
+                <div className="bg-white/10 p-2 rounded-md mb-0 md:mb-0 max-h-full md:max-h-[75vh] md:col-span-1 overflow-auto">
                   <div className="flex justify-between items-center mb-4">
                     <h2 className="text-lg font-bold">Available Items</h2>
                     <button 

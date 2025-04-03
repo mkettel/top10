@@ -58,7 +58,7 @@ export const ScoresPanel = ({ players }: ScoresPanelProps) => {
       {/* Toggle button (only on mobile) */}
       {isMobile && (
         <motion.button
-          initial={{ opacity: 0.6 }}
+          initial={{ opacity: 0.8 }}
           whileHover={{ opacity: 1, scale: 1.01 }}
           onClick={() => setIsOpen(!isOpen)}
           className="fixed top-1/3 right-0 w-10 h-28 cursor-pointer bg-yellow-600/80 hover:bg-yellow-600 rounded-l-lg flex items-center justify-center z-20 shadow-lg"
@@ -88,7 +88,7 @@ export const ScoresPanel = ({ players }: ScoresPanelProps) => {
           stiffness: 300, 
           damping: 30
         }}
-        className={`${isMobile ? 'fixed top-0 right-0 h-full w-3/4 max-w-xs' : 'h-full w-full'} bg-white/10 backdrop-blur-sm rounded-md shadow-lg p-4 z-20`}
+        className={`${isMobile ? 'fixed top-0 right-0 h-full w-3/4 max-w-xs' : 'h-full w-full'} bg-white/25 backdrop-blur-md rounded-md shadow-lg p-4 z-20`}
       >
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-bold flex items-center">
