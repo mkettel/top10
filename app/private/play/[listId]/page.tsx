@@ -576,8 +576,8 @@ export default function GamePlayPage({ params }: { params: { listId: string } })
             <div className="flex gap-2">
             <Tabs defaultValue='list' className='w-full bg-white/10 rounded-md p-1'>
               <TabsList className="grid bg-transparent w-full grid-cols-2">
-                <TabsTrigger value="list" className='cursor-pointer'>List</TabsTrigger>
-                <TabsTrigger value="Guessed" className='cursor-pointer'>Guessed</TabsTrigger>
+                <TabsTrigger value="list" className='cursor-pointer text-white'>List</TabsTrigger>
+                <TabsTrigger value="Guessed" className='cursor-pointer text-white'>Guessed</TabsTrigger>
               </TabsList>
 
               <TabsContent value="list">
