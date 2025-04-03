@@ -25,38 +25,10 @@ import {
   Trophy,
   RefreshCw
 } from 'lucide-react'
+import { ListData, ListItem, Player, GuessedItem } from '@/lib/types/game'
+import { ScoresPanel } from '@/components/ScoresPanel'
 
-// Types
-interface ListItem {
-  id: string
-  rank: number
-  name: string
-  details?: string
-  statistic?: string
-}
 
-interface Player {
-  id: string
-  name: string
-  score: number
-  draftPosition: number
-  isJudge?: boolean
-}
-
-interface GuessedItem {
-  playerId: string
-  playerName: string
-  itemId: string
-  itemName: string
-  itemRank: number
-}
-
-interface ListData {
-  id: string
-  title: string
-  description?: string
-  source_url?: string
-}
 
 export default function GamePlayPage({ params }: { params: { listId: string } }) {
   const { listId } = use(params)
@@ -81,6 +53,25 @@ export default function GamePlayPage({ params }: { params: { listId: string } })
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [confirmationMessage, setConfirmationMessage] = useState('')
   const [confirmationAction, setConfirmationAction] = useState<() => void>(() => {})
+  const [isMobile, setIsMobile] = useState(false)
+
+  // Check if device is mobile on mount and when window resizes
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    
+    // Initial check
+    checkIfMobile()
+    
+    // Add event listener
+    window.addEventListener('resize', checkIfMobile)
+    
+    // Cleanup
+    return () => {
+      window.removeEventListener('resize', checkIfMobile)
+    }
+  }, [])
 
   // Fetch game data
   useEffect(() => {
@@ -575,54 +566,25 @@ export default function GamePlayPage({ params }: { params: { listId: string } })
         {/* Playing Phase */}
         {gamePhase === 'playing' && (
 
-          <div className="w-full max-w-md mx-auto md:flex flex-wrap md:gap-2 md:max-w-4xl justify-center">
-            {/* <h1 className="text-xl w-full  font-bold">{list?.title}</h1> */}
-
-            {/* Player scores */}
-            <div className="bg-white/10 p-4 md:col-span-2 w-full mb-4 md:mb-0 rounded-md">
-              <h2 className="text-xl font-bold mb-4">Player Scores</h2>
-              <div className="grid grid-cols-1 gap-2">
-                {players
-                  .sort((a, b) => b.score - a.score) // Sort by score descending
-                  .map((player, index) => (
-                    <div 
-                      key={player.id} 
-                      className={`p-3 rounded-md flex justify-between items-center ${
-                        index === 0 && player.score > 0 && !player.isJudge ? 'bg-yellow-500/20' : 
-                        player.isJudge ? 'bg-yellow-500/10 border border-yellow-500/30' : 'bg-white/10'
-                      }`}
-                    >
-                      <div className="flex items-center">
-                        {index === 0 && player.score > 0 && !player.isJudge && (
-                          <Trophy size={16} className="text-yellow-400 mr-2" />
-                        )}
-                        {player.isJudge && (
-                          <Crown size={16} className="text-yellow-400 mr-2" />
-                        )}
-                        <span className="font-medium capitalize">{player.name}</span>
-                        {player.isJudge && (
-                          <span className="ml-2 text-xs text-yellow-400">(Judge)</span>
-                        )}
-                      </div>
-                      <span className="text-lg font-bold">{player.score}</span>
-                    </div>
-                  ))
-                }
-              </div>
+          <div className="w-full max-w-lg mx-auto md:flex-col flex-wrap md:gap-2 md:max-w-5xl justify-center">
+            
+            <div className="flex items-center justify-center mb-2 md:mb-4">
+              <h1 className="text-xl md:text-3xl text-center font-bold">{list?.title}</h1>
             </div>
 
             {/* Available items - only show when not in player selection mode */}
-            <Tabs defaultValue='list' className='w-full'>
+            <div className="flex gap-2">
+            <Tabs defaultValue='list' className='w-full bg-white/10 rounded-md p-1'>
               <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="list">List</TabsTrigger>
-                <TabsTrigger value="Guessed">Guessed</TabsTrigger>
+                <TabsTrigger value="list" className='cursor-pointer'>List</TabsTrigger>
+                <TabsTrigger value="Guessed" className='cursor-pointer'>Guessed</TabsTrigger>
               </TabsList>
 
               <TabsContent value="list">
               {!showPlayerSelection && (
-                <div className="bg-white/10 p-4 rounded-md mb-4 md:mb-0 max-h-[60vh] md:col-span-1 overflow-auto">
+                <div className="bg-white/10 p-2 rounded-md mb-0 md:mb-0 max-h-[75vh] md:col-span-1 overflow-auto">
                   <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-xl font-bold">Available Items</h2>
+                    <h2 className="text-lg font-bold">Available Items</h2>
                     <button 
                       onClick={() => setShowList(!showList)}
                       className="text-sm flex items-center text-white/70 hover:text-white cursor-pointer"
@@ -683,7 +645,7 @@ export default function GamePlayPage({ params }: { params: { listId: string } })
               {showPlayerSelection && selectedItem && (
                 <div className="bg-white/10 p-4 rounded-md mb-4 md:mb-0">
                   <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-xl font-bold">Who Guessed It?</h2>
+                    <h2 className="text-lg font-bold">Who Guessed It?</h2>
                     <button 
                       onClick={() => {
                         setSelectedItem(null)
@@ -735,7 +697,7 @@ export default function GamePlayPage({ params }: { params: { listId: string } })
               <TabsContent value="Guessed">
                 <div className="bg-white/10 p-4 rounded-md mb-4 md:mb-0 md:col-span-1">
                   <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-xl font-bold">Guessed Items</h2>
+                    <h2 className="text-lg font-bold">Guessed Items</h2>
                     <div className="bg-white/20 px-3 py-1 rounded-full text-sm">
                       {guessedItems.length}/10 Guessed
                     </div>
@@ -764,8 +726,15 @@ export default function GamePlayPage({ params }: { params: { listId: string } })
                   )}
                 </div>
               </TabsContent>
-          
             </Tabs>
+
+            {/* Player scores */}
+            <div className={`md:w-full ${isMobile ? 'fixed top-16 right-0 h-[calc(100vh-64px)] z-20' : ''}`}>
+              <ScoresPanel players={players} />
+            </div>
+            </div>
+
+
           </div>
         )}
 
