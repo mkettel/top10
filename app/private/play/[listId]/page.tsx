@@ -171,6 +171,7 @@ export default function GamePlayPage({ params }: { params: { listId: string } })
         if (itemsError) throw itemsError
         
         setList(listData)
+        console.log('listData:', listData)
         setListItems(itemsData)
       } catch (error) {
         console.error('Error fetching game data:', error)
@@ -584,7 +585,18 @@ export default function GamePlayPage({ params }: { params: { listId: string } })
               {!showPlayerSelection && (
                 <div className="bg-white/10 p-2 rounded-md mb-0 md:mb-0 max-h-full md:max-h-[75vh] md:col-span-1 overflow-auto">
                   <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-lg font-bold">Available Items</h2>
+                    <div className="mb-2">
+                      <h2 className="text-lg font-bold">Available Items</h2>
+                      <a 
+                        href={list?.source_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-300 hover:text-blue-200 text-sm flex items-center"
+                      >
+                        <span className="truncate max-w-64">{list?.source_url}</span>
+                        <ExternalLink size={14} className="ml-1 flex-shrink-0" />
+                      </a>
+                    </div>
                     <button 
                       onClick={() => setShowList(!showList)}
                       className="text-sm flex items-center text-white/70 hover:text-white cursor-pointer"
