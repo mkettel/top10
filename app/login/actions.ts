@@ -63,5 +63,5 @@ export async function signup(formData: FormData) {
   }
 
   revalidatePath('/', 'layout')
-  redirect('/verification') // Redirect to a verification page
+  redirect('/login') // Redirect to a verification page
 }
