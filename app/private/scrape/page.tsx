@@ -244,7 +244,7 @@ export default function ScrapeListsPage() {
   return (
     <div className="min-h-screen bg-new-blue text-offwhite flex flex-col">
       <header className="p-4 border-b border-white/20 flex items-center">
-        <Link href="/private/admin" className="p-2 rounded-full hover:bg-white/10 mr-3">
+        <Link href="/private" className="p-2 rounded-full hover:bg-white/10 mr-3">
           <ArrowLeft size={20} />
         </Link>
         <h1 className="text-2xl font-bold">List Scraper</h1>

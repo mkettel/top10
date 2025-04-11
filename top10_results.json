@@ -1,0 +1,59 @@
+[
+  {
+    "topic": "smallest birds in the united states",
+    "source_url": "https://a-z-animals.com/blog/the-top-10-smallest-birds-in-north-america/",
+    "items": [
+      {
+        "rank": 1,
+        "name": "Bee Hummingbird",
+        "details": "2.25 inches, weight of under two grams or less than 0.07 ounces. Found in Cuba."
+      },
+      {
+        "rank": 2,
+        "name": "Calliope Hummingbird",
+        "details": "Maximum length between three to 3.5 inches and weigh only one-tenth of an ounce. Found across the southwestern United States and much of Mexico."
+      },
+      {
+        "rank": 3,
+        "name": "Costa’s Hummingbird",
+        "details": "Maximum length of 3.5 inches, weighs no more than 0.10 ounces. Typically found in the southwestern states, but have been spotted as far north as Alaska."
+      },
+      {
+        "rank": 4,
+        "name": "American Bushtit",
+        "details": "Reaches lengths of 2.8 inches up to 4.33 inches, can weigh as little as one-tenth of one ounce, with a maximum weight of 0.20 ounces."
+      },
+      {
+        "rank": 5,
+        "name": "Verdin",
+        "details": "Around 3.5 inches with a maximum length of 4.3 inches, weighs between one-fifth and one-third of an ounce."
+      },
+      {
+        "rank": 6,
+        "name": "Ruby-crowned Kinglet",
+        "details": "Measures 3.5-4.3 inches and weigh in between 0.20-0.40 ounces."
+      },
+      {
+        "rank": 7,
+        "name": "Lesser Goldfinch",
+        "details": "Weighs between 0.28-0.41 ounces and are between 3.5-4.7 inches long."
+      },
+      {
+        "rank": 8,
+        "name": "Brown-headed Nuthatch",
+        "details": "Measures 3.5-4.3 inches long with a weight that varies between just over one-third of an ounce to just under one-half an ounce. Found in the southwestern United States."
+      },
+      {
+        "rank": 9,
+        "name": "Carolina Chickadee",
+        "details": "Measuring only 4.5-5 inches in length and weighing in at around one-third of an ounce."
+      },
+      {
+        "rank": 10,
+        "name": "American Goldfinch",
+        "details": "Ranges from 4.3-5.5 inches in length and weigh between three-eights and three-quarters of an ounce. Found in the United States, Canada, and Mexico, depending on the time of year."
+      }
+    ],
+    "google_doc_url": null
+  }
+]
