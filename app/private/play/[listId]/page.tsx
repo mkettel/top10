@@ -653,6 +653,11 @@ export default function GamePlayPage({ params }: { params: { listId: string } })
                                   {showList ? item.details : "????"}
                                 </div>
                               )}
+                              {item.statistic && (
+                                <div className="text-xs text-white/70">
+                                  {showList ? item.statistic: "?????"}
+                                </div>
+                              )}
                             </div>
                             {isGuessed && (
                               <div className="ml-auto">
@@ -692,6 +697,11 @@ export default function GamePlayPage({ params }: { params: { listId: string } })
                         {selectedItem.details && (
                           <div className="text-xs text-white/70">
                             {selectedItem.details}
+                          </div>
+                        )}
+                        {selectedItem.statistic && (
+                          <div className="text-xs text-white/70">
+                            {selectedItem.statistic}
                           </div>
                         )}
                       </div>
